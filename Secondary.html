@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secondary Achievements - Ray Tok Portfolio</title>
+    <style>
+       * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0a0e27;
+    color: #e0e0e0;
+    overflow-x: hidden;
+    padding-top: 50px;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 14, 39, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 8px 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.nav-logo img {
+    width: 140px;
+    height: auto;
+    transition: all 0.3s ease;
+}
+
+.nav-logo img:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #b0b0b0;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 6px 16px;
+    border-radius: 10px;
+    position: relative;
+    letter-spacing: 0.3px;
+}
+
+.nav-links a:hover {
+    color: #ffffff;
+    background: rgba(138, 43, 226, 0.15);
+}
+
+.nav-links a.active {
+    color: #00ffff;
+    background: rgba(0, 255, 255, 0.1);
+}
+
+.nav-links a::before {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00ffff, #8a2be2);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+    opacity: 0;
+}
+
+.nav-links a:hover::before {
+    width: 60%;
+    opacity: 1;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.menu-toggle span {
+    width: 28px;
+    height: 3px;
+    background: #00ffff;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+.wave-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.wave {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(138, 43, 226, 0.1), 
+        rgba(0, 255, 255, 0.1), 
+        rgba(255, 0, 255, 0.1));
+    animation: wave 15s linear infinite;
+}
+
+.wave:nth-child(2) {
+    animation: wave 20s linear infinite reverse;
+    opacity: 0.5;
+}
+
+.wave:nth-child(3) {
+    animation: wave 25s linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes wave {
+    0% { transform: translateX(0) translateY(0); }
+    50% { transform: translateX(-25%) translateY(-10px); }
+    100% { transform: translateX(0) translateY(0); }
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+header {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(10, 14, 39, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3),
+                inset 0 0 40px rgba(138, 43, 226, 0.1);
+    margin-bottom: 40px;
+    animation: glow 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.3), inset 0 0 40px rgba(138, 43, 226, 0.1); }
+    50% { box-shadow: 0 0 60px rgba(0, 255, 255, 0.5), inset 0 0 60px rgba(138, 43, 226, 0.2); }
+}
+
+h1 {
+    font-size: 3.5em;
+    background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+    text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    margin-bottom: 15px;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.tagline {
+    font-size: 1.5em;
+    color: #00ffff;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: rgba(0, 255, 255, 0.8);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+    }
+}
+
+.achievement-section {
+    background: rgba(15, 20, 50, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 50px;
+    border-radius: 20px;
+    border: 2px solid rgba(138, 43, 226, 0.3);
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+    margin-bottom: 40px;
+}
+
+.achievement-section h2 {
+    color: #00ffff;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+    text-align: center;
+}
+
+.achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.achievement-card {
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(0, 255, 255, 0.1));
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    min-height: 520px;
+}
+
+.achievement-card:hover {
+    transform: translateY(-10px);
+    border-color: #ff00ff;
+    box-shadow: 0 10px 40px rgba(255, 0, 255, 0.5);
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(0, 255, 255, 0.2));
+}
+
+.achievement-card h3 {
+    color: #ff00ff;
+    font-size: 1.3em;
+    margin-bottom: 12px;
+    text-shadow: 0 0 15px rgba(255, 0, 255, 0.7);
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.achievement-card p {
+    color: #b0b0ff;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+.achievement-icon {
+    font-size: 2.5em;
+    margin-bottom: 12px;
+    display: block;
+    text-align: center;
+}
+
+.achievement-image-container {
+    margin-top: auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.achievement-image-container:hover {
+    border-color: #ff00ff;
+    box-shadow: 0 8px 30px rgba(255, 0, 255, 0.5);
+    transform: scale(1.02);
+}
+
+.achievement-image-container::after {
+    content: '🔍 Click to enlarge';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: #00ffff;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9em;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.achievement-image-container:hover::after {
+    opacity: 1;
+}
+
+.achievement-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    padding: 5px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 40px 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-content {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-content img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 15px;
+    border: 3px solid #00ffff;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+}
+
+.modal-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    color: #00ffff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.8);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 2px solid #00ffff;
+    z-index: 2001;
+}
+
+.modal-close:hover {
+    background: rgba(255, 0, 255, 0.8);
+    border-color: #ff00ff;
+    transform: rotate(90deg);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 968px) {
+    body {
+        padding-top: 55px;
+    }
+
+    .nav-container {
+        padding: 0 20px;
+    }
+
+    .nav-logo img {
+        width: 120px;
+    }
+
+    .nav-links {
+        gap: 5px;
+    }
+
+    .nav-links a {
+        font-size: 0.9em;
+        padding: 6px 12px;
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    .tagline {
+        font-size: 1.2em;
+    }
+
+    .achievement-section h2 {
+        font-size: 2em;
+    }
+
+    header {
+        padding: 40px 20px;
+    }
+
+    .achievement-section {
+        padding: 30px 20px;
+    }
+
+    .achievement-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    .achievement-card {
+        min-height: 480px;
+    }
+
+    .modal-content {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding-top: 55px;
+    }
+
+    nav {
+        padding: 8px 0;
+    }
+
+    .nav-container {
+        padding: 0 15px;
+    }
+
+    .nav-logo img {
+        width: 100px;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 55px;
+        right: -100%;
+        width: 250px;
+        height: calc(100vh - 55px);
+        background: rgba(10, 14, 39, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 0;
+        transition: right 0.3s ease;
+        border-left: 1px solid rgba(138, 43, 226, 0.3);
+        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links a {
+        display: block;
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 1.1em;
+        text-align: left;
+        border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+    }
+
+    .nav-links a::before {
+        display: none;
+    }
+
+    .content {
+        padding: 20px 15px;
+    }
+
+    header {
+        padding: 30px 15px;
+        margin-bottom: 30px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    .tagline {
+        font-size: 1em;
+    }
+
+    .achievement-section {
+        padding: 25px 15px;
+        margin-bottom: 30px;
+    }
+
+    .achievement-section h2 {
+        font-size: 1.6em;
+        margin-bottom: 20px;
+    }
+
+    .achievement-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .achievement-card {
+        padding: 20px;
+        min-height: 450px;
+    }
+
+    .achievement-card h3 {
+        font-size: 1.2em;
+        min-height: 45px;
+    }
+
+    .modal {
+        padding: 20px 10px;
+    }
+
+    .modal-close {
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 30px;
+    }
+
+    .modal-content {
+        max-width: 100%;
+    }
+
+    .achievement-image-container {
+        height: 250px;
+    }
+}
+
+@media (max-width: 400px) {
+    .nav-logo img {
+        width: 90px;
+    }
+
+    h1 {
+        font-size: 1.7em;
+    }
+
+    .tagline {
+        font-size: 0.9em;
+    }
+
+    .achievement-section h2 {
+        font-size: 1.4em;
+    }
+
+    .achievement-card h3 {
+        font-size: 1.1em;
+    }
+
+    .achievement-icon {
+        font-size: 2.2em;
+    }
+
+    .achievement-image-container {
+        height: 220px;
+    }
+}
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="Photo/finallogo.png" alt="Logo">
+            </div>
+            
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="Secondary.html" class="active">Secondary</a></li>
+                <li><a href="ITE.html">ITE</a></li>
+              <li><a href="poly.html">Polytechnic</a></li>
+                <li><a href="project.html">Projects</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <div class="content">
+        <header>
+            <h1>Secondary School Journey</h1>
+            <p class="tagline">Marsiling Secondary School (2018-2021)</p>
+        </header>
+
+        <section class="achievement-section">
+            <h2>🎓 Achievements & Participation</h2>
+            <div class="achievement-grid">
+                
+                <!-- 13 April 2018 - Most Improved -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">🏆</span>
+                    <h3>Most Improved Student Award</h3>
+                    <p><strong>Date:</strong> 13 April 2018</p>
+                    <p>Awarded for achieving Most Improved Student Award in Secondary 1 Normal (Technical).</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418741_w.jpg', 'Most Improved Student Award')">
+                        <img src="Photo/photo_6179286959520418741_w.jpg" alt="Most Improved Student Award" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 16 August 2018 - Math Competition -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">🧮</span>
+                    <h3>Mathematics Competition 2018</h3>
+                    <p><strong>Date:</strong> 16 August 2018</p>
+                    <p>Certificate of Participation in All Singapore Secondary Mathematics Competition for Normal Course Students 2018 - Lower Secondary Normal Technical Individual Category.</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418742_w.jpg', 'Mathematics Competition 2018')">
+                        <img src="Photo/photo_6179286959520418742_w.jpg" alt="Mathematics Competition 2018" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 2018 EDUSAVE (for Sec 2) -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">🎓</span>
+                    <h3>EDUSAVE Scholarship 2018</h3>
+                    <p><strong>Year:</strong> 2018 (Secondary 2)</p>
+                    <p>Awarded EDUSAVE Scholarship for achieving excellent academic performance and demonstrating good conduct.</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418746_w.jpg', 'EDUSAVE Scholarship 2018')">
+                        <img src="Photo/photo_6179286959520418746_w.jpg" alt="EDUSAVE Scholarship 2018" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 22 February 2019 - Second in Class -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">🥈</span>
+                    <h3>Second in Class Achievement</h3>
+                    <p><strong>Date:</strong> 22 February 2019</p>
+                    <p>Academic Award for achieving Second in Class for Secondary 2 Normal (Technical) Class 2T1.</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418744_w.jpg', 'Second in Class')">
+                        <img src="Photo/photo_6179286959520418744_w.jpg" alt="Second in Class" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 28 February 2019 - Marsiling Merit -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">⭐</span>
+                    <h3>Marsiling Merit Award</h3>
+                    <p><strong>Date:</strong> 28 February 2019</p>
+                    <p>Academic Award for achieving Marsiling Merit Award in Secondary 2 Normal (Technical).</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418743_w.jpg', 'Marsiling Merit Award')">
+                        <img src="Photo/photo_6179286959520418743_w.jpg" alt="Marsiling Merit Award" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 1 March 2019 - Good Progress -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">📈</span>
+                    <h3>Good Progress Award</h3>
+                    <p><strong>Date:</strong> 1 March 2019</p>
+                    <p>Academic Award for achieving Good Progress in Secondary 2 Normal (Technical).</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418745_w.jpg', 'Good Progress Award')">
+                        <img src="Photo/photo_6179286959520418745_w.jpg" alt="Good Progress Award" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 2019 EDUSAVE (for Sec 3) -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">🎓</span>
+                    <h3>EDUSAVE Scholarship 2019</h3>
+                    <p><strong>Year:</strong> 2019 (Secondary 3)</p>
+                    <p>Awarded EDUSAVE Scholarship for achieving excellent academic performance and demonstrating good conduct.</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418747_w.jpg', 'EDUSAVE Scholarship 2019')">
+                        <img src="Photo/photo_6179286959520418747_w.jpg" alt="EDUSAVE Scholarship 2019" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 5 February 2020 - NYAA Silver -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">🥈</span>
+                    <h3>National Youth Achievement Award - Silver</h3>
+                    <p><strong>Date:</strong> 5 February 2020</p>
+                    <p>Attained THE SILVER LEVEL of the National Youth Achievement Award, demonstrating commitment to personal development and community service.</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418751_w.jpg', 'NYAA Silver')">
+                        <img src="Photo/photo_6179286959520418751_w.jpg" alt="National Youth Achievement Award - Silver" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 21 August 2020 - Math Individual -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">🔢</span>
+                    <h3>Mathematics Competition - Individual</h3>
+                    <p><strong>Date:</strong> 21 August 2020</p>
+                    <p>Certificate of Participation in All Singapore Secondary Mathematics Competition for Normal Course Students 2020 - Upper Secondary Normal Technical Individual Category.</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418749_w.jpg', 'Math Competition Individual')">
+                        <img src="Photo/photo_6179286959520418749_w.jpg" alt="Mathematics Competition Individual" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 21 August 2020 - Math Team -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">👥</span>
+                    <h3>Mathematics Competition - Team</h3>
+                    <p><strong>Date:</strong> 21 August 2020</p>
+                    <p>Certificate of Participation in All Singapore Secondary Mathematics Competition for Normal Course Students 2020 - Upper Secondary Normal Technical Team Category.</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418748_w.jpg', 'Math Competition Team')">
+                        <img src="Photo/photo_6179286959520418748_w.jpg" alt="Mathematics Competition Team" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 2020 EDUSAVE (for Sec 4) - Signed by Lawrence Wong -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">🎓</span>
+                    <h3>EDUSAVE Scholarship 2020</h3>
+                    <p><strong>Year:</strong> 2020 (Secondary 4)</p>
+                    <p>Awarded EDUSAVE Scholarship for achieving excellent academic performance and demonstrating good conduct. Signed by Minister for Education Lawrence Wong.</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418752_w.jpg', 'EDUSAVE Scholarship 2020')">
+                        <img src="Photo/photo_6179286959520418752_w.jpg" alt="EDUSAVE Scholarship 2020" class="achievement-image">
+                    </div>
+                </div>
+
+                <!-- 26 March 2021 - Outstanding Performance -->
+                <div class="achievement-card">
+                    <span class="achievement-icon">🏅</span>
+                    <h3>Outstanding Performance Award</h3>
+                    <p><strong>Date:</strong> 26 March 2021</p>
+                    <p>Awarded Outstanding Performance Award for Secondary 4 Normal (Technical) at Marsiling Secondary School.</p>
+                    <div class="achievement-image-container" onclick="openModalWithImage('imageModal', 'Photo/photo_6179286959520418750_w.jpg', 'Outstanding Performance Award')">
+                        <img src="Photo/photo_6179286959520418750_w.jpg" alt="Outstanding Performance Award" class="achievement-image">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Universal Image Modal -->
+    <div id="imageModal" class="modal" onclick="closeModal('imageModal')">
+        <span class="modal-close" onclick="closeModal('imageModal'); event.stopPropagation();">&times;</span>
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+    
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-container')) {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Universal Modal functions for dynamic images
+        function openModalWithImage(modalId, imageSrc, imageAlt) {
+            const modal = document.getElementById(modalId);
+            const modalImage = document.getElementById('modalImage');
+            
+            modalImage.src = imageSrc;
+            modalImage.alt = imageAlt;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 6 + 's';
+            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 10000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 300);
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const targetSection = document.querySelector(href);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

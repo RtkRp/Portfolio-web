@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Projects - Ray Tok</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 8px 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .nav-logo img {
+            width: 140px;
+            height: auto;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo img:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 6px 16px;
+            border-radius: 10px;
+            position: relative;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            background: rgba(138, 43, 226, 0.15);
+        }
+
+        .nav-links a.active {
+            color: #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ffff, #8a2be2);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            opacity: 0;
+        }
+
+        .nav-links a:hover::before {
+            width: 60%;
+            opacity: 1;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: #00ffff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* Game Screen - FIXED VERSION */
+        #gameScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            transition: opacity 1s ease, transform 2s ease;
+            padding: 20px;
+            gap: 2vh;
+        }
+
+        #gameScreen.hidden {
+            opacity: 0;
+            transform: scale(3);
+            pointer-events: none;
+        }
+
+        .game-title {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: bold;
+            color: #00ffff;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2vh;
+            text-align: center;
+            animation: glow 2s ease-in-out infinite, shimmer 3s linear infinite;
+            padding: 0 20px;
+            max-width: 95%;
+            line-height: 1.3;
+        }
+
+        @supports not (-webkit-background-clip: text) {
+            .game-title {
+                color: #00ffff;
+                -webkit-text-fill-color: #00ffff;
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 0, 255, 0.8)); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        #tradingChart {
+            width: min(90%, 800px);
+            height: clamp(200px, 40vh, 400px);
+            background: rgba(15, 20, 50, 0.8);
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            margin-bottom: 2vh;
+            position: relative;
+            overflow: hidden;
+            display: block;
+        }
+
+        #chartCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        #startButton {
+            padding: clamp(12px, 2vh, 20px) clamp(30px, 5vw, 60px);
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            background: linear-gradient(45deg, #8a2be2, #00ffff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.5);
+            white-space: nowrap;
+        }
+
+        #startButton:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.8);
+        }
+
+        #startButton.clicked {
+            display: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            opacity: 0;
+            padding-top: 80px;
+            min-height: 100vh;
+            transition: opacity 1s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .project-section {
+            background: rgba(15, 20, 50, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 20px;
+            border: 2px solid rgba(138, 43, 226, 0.3);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+            margin-bottom: 60px;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-title {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: #00ffff;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        @supports not (-webkit-background-clip: text) {
+            .project-title {
+                color: #00ffff;
+                -webkit-text-fill-color: #00ffff;
+            }
+        }
+
+        .project-description {
+            color: #b0b0ff;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tech-badge {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(0, 255, 255, 0.2));
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            border-radius: 25px;
+            color: #00ffff;
+            font-weight: 600;
+            font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+        }
+
+        .project-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .project-image-container {
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            height: 350px;
+            background: rgba(10, 14, 39, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-image-container:hover {
+            border-color: #ff00ff;
+            box-shadow: 0 10px 40px rgba(255, 0, 255, 0.5);
+            transform: translateY(-10px);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+        }
+
+        .project-image-container::after {
+            content: '🔍 Click to enlarge';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ffff;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-image-container:hover::after {
+            opacity: 1;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .modal.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            border: 3px solid #00ffff;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+        }
+
+        .modal-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: #00ffff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.8);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border: 2px solid #00ffff;
+            z-index: 2001;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 0, 255, 0.8);
+            border-color: #ff00ff;
+            transform: rotate(90deg);
+        }
+
+        /* Responsive - Medium screens */
+        @media (max-width: 968px) {
+            .nav-container {
+                padding: 0 20px;
+            }
+
+            .game-title {
+                font-size: clamp(1.3rem, 3.5vw, 2rem);
+            }
+
+            #tradingChart {
+                width: 95%;
+                height: clamp(180px, 35vh, 300px);
+            }
+
+            #startButton {
+                padding: clamp(10px, 1.5vh, 15px) clamp(25px, 4vw, 40px);
+                font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            }
+
+            .project-section {
+                padding: 30px 20px;
+            }
+
+            .project-title {
+                font-size: clamp(1.3rem, 2.5vw, 2rem);
+            }
+
+            .project-images {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-image-container {
+                height: 300px;
+            }
+        }
+
+        /* Responsive - Small screens */
+        @media (max-width: 600px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 55px;
+                right: -100%;
+                width: 250px;
+                height: calc(100vh - 55px);
+                background: rgba(10, 14, 39, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 30px 20px;
+                gap: 0;
+                transition: right 0.3s ease;
+                border-left: 1px solid rgba(138, 43, 226, 0.3);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                width: 100%;
+                padding: 15px 20px;
+                font-size: 1.1em;
+                text-align: left;
+                border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+            }
+
+            .game-title {
+                font-size: clamp(1.2rem, 5vw, 1.5rem);
+                margin-bottom: 1.5vh;
+            }
+
+            #tradingChart {
+                height: clamp(150px, 30vh, 250px);
+                width: 95%;
+            }
+
+            .project-title {
+                font-size: clamp(1.2rem, 4vw, 1.5rem);
+            }
+
+            .project-section {
+                padding: 25px 15px;
+            }
+            
+            .project-image-container {
+                height: 250px;
+            }
+        }
+
+        /* Extra responsive adjustments for zoom levels */
+        @media (min-width: 1400px) and (min-height: 800px) {
+            #gameScreen {
+                gap: 3vh;
+            }
+            
+            .game-title {
+                font-size: clamp(2rem, 3.5vw, 3.5rem);
+            }
+            
+            #tradingChart {
+                height: clamp(300px, 45vh, 500px);
+            }
+        }
+
+        /* Handle smaller viewport heights */
+        @media (max-height: 700px) {
+            #gameScreen {
+                gap: 1.5vh;
+                padding: 15px;
+            }
+
+            .game-title {
+                font-size: clamp(1.2rem, 3.5vw, 2rem);
+                margin-bottom: 1vh;
+            }
+
+            #tradingChart {
+                height: clamp(150px, 35vh, 280px);
+                margin-bottom: 1.5vh;
+            }
+
+            #startButton {
+                padding: clamp(10px, 1.5vh, 15px) clamp(25px, 4vw, 45px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="Photo/finallogo.png" alt="Logo">
+            </div>
+            
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="Secondary.html">Secondary</a></li>
+                <li><a href="ITE.html">ITE</a></li>
+                <li><a href="poly.html">Polytechnic</a></li>
+                <li><a href="project.html" class="active">Projects</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Game Screen -->
+    <div id="gameScreen">
+        <h1 class="game-title">🚀 Welcome to Ray's Project Portfolio</h1>
+        <div id="tradingChart">
+            <canvas id="chartCanvas"></canvas>
+        </div>
+        <button id="startButton">Start Journey</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="content">
+            <!-- Project 1: RTGM E-Commerce -->
+            <section class="project-section">
+                <h2 class="project-title">💳 Revolutionizing E-Commerce with RTGM</h2>
+                <p class="project-description">
+                    A comprehensive fintech solution featuring secure payment integration, e-wallet functionality, and MAS regulatory compliance. 
+                    This full-stack platform integrates PayPal and NETS APIs with advanced fraud detection systems to ensure financial inclusion 
+                    while maintaining robust security standards. The e-wallet system implements transaction limits aligned with regulatory requirements 
+                    to automatically flag suspicious activities and prevent fraudulent transactions.
+                </p>
+
+                <div class="tech-stack">
+                    <span class="tech-badge">HTML5</span>
+                    <span class="tech-badge">CSS3</span>
+                    <span class="tech-badge">JavaScript</span>
+                    <span class="tech-badge">Java</span>
+                    <span class="tech-badge">SQL Database</span>
+                    <span class="tech-badge">REST API</span>
+                    <span class="tech-badge">Middleware</span>
+                    <span class="tech-badge">PayPal API</span>
+                    <span class="tech-badge">NETS API</span>
+                    <span class="tech-badge">Fraud Detection</span>
+                    <span class="tech-badge">MAS Compliance</span>
+                </div>
+
+                <div class="project-images">
+                    <div class="project-image-container" onclick="openModal('Photo/rtgm_project1.jpg')">
+                        <img src="Photo/rtgm_project1.jpg" alt="RTGM Project 1" class="project-image">
+                    </div>
+                    <div class="project-image-container" onclick="openModal('Photo/rtgm_project2.jpg')">
+                        <img src="Photo/rtgm_project2.jpg" alt="RTGM Project 2" class="project-image">
+                    </div>
+                    <div class="project-image-container" onclick="openModal('Photo/rtgm_project3.jpg')">
+                        <img src="Photo/rtgm_project3.jpg" alt="RTGM Project 3" class="project-image">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Project 2: RTradeHub Blockchain -->
+            <section class="project-section">
+                <h2 class="project-title">🔗 RTradeHub – Next-Gen Crypto Payments</h2>
+                <p class="project-description">
+                    A cutting-edge Web3 blockchain platform built on Ethereum using Ganache for local development. This decentralized application 
+                    features smart contract-based NFT ownership verification to combat fraud and prevent rug pulls. The platform includes MetaMask 
+                    integration for secure wallet authentication, enabling seamless buying, selling, and transferring of digital assets. An intelligent 
+                    AI-powered FAQ chatbot provides instant user support and guidance throughout the trading experience.
+                </p>
+
+                <div class="tech-stack">
+                    <span class="tech-badge">Blockchain</span>
+                    <span class="tech-badge">Web3</span>
+                    <span class="tech-badge">Solidity</span>
+                    <span class="tech-badge">Smart Contracts</span>
+                    <span class="tech-badge">Ganache</span>
+                    <span class="tech-badge">MetaMask</span>
+                    <span class="tech-badge">EJS</span>
+                    <span class="tech-badge">JavaScript</span>
+                    <span class="tech-badge">HTML5</span>
+                    <span class="tech-badge">NFT</span>
+                    <span class="tech-badge">AI Chatbot</span>
+                </div>
+
+                <div class="project-images">
+                    <div class="project-image-container" onclick="openModal('Photo/rtradehub_project1.jpg')">
+                        <img src="Photo/rtradehub_project1.jpg" alt="RTradeHub Project 1" class="project-image">
+                    </div>
+                    <div class="project-image-container" onclick="openModal('Photo/rtradehub_project2.jpg')">
+                        <img src="Photo/rtradehub_project2.jpg" alt="RTradeHub Project 2" class="project-image">
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="modal-close" onclick="closeModal(); event.stopPropagation();">&times;</span>
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Trading Chart Animation - FIXED VERSION
+        const canvas = document.getElementById('chartCanvas');
+        const ctx = canvas.getContext('2d');
+        let dataPoints = [];
+        let animationId = null;
+
+        function resizeCanvas() {
+            const container = document.getElementById('tradingChart');
+            const rect = container.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            
+            // Redraw after resize
+            if (dataPoints.length > 0) {
+                drawChart(1);
+            }
+        }
+
+        function generateChartData() {
+            dataPoints = [];
+            let value = 100;
+            for (let i = 0; i < 100; i++) {
+                value += Math.random() * 20 - 5;
+                dataPoints.push(Math.max(value, 50)); // Keep values positive
+            }
+        }
+
+        function drawChart(progress) {
+            if (!ctx || canvas.width === 0 || canvas.height === 0) return;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Grid
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 5; i++) {
+                const y = (canvas.height / 5) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Chart line
+            const points = Math.floor(dataPoints.length * progress);
+            if (points === 0) return;
+
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+
+            const xStep = canvas.width / (dataPoints.length - 1);
+            const yMax = Math.max(...dataPoints);
+            const yMin = Math.min(...dataPoints);
+            const yRange = yMax - yMin || 1;
+            const yScale = (canvas.height * 0.7) / yRange;
+            const yOffset = canvas.height * 0.15;
+
+            for (let i = 0; i < points; i++) {
+                const x = i * xStep;
+                const y = canvas.height - yOffset - ((dataPoints[i] - yMin) * yScale);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+
+            // Gradient fill
+            if (points > 1) {
+                const lastX = (points - 1) * xStep;
+                const lastY = canvas.height - yOffset - ((dataPoints[points - 1] - yMin) * yScale);
+                
+                ctx.lineTo(lastX, canvas.height);
+                ctx.lineTo(0, canvas.height);
+                ctx.closePath();
+                
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, 'rgba(0, 255, 255, 0.3)');
+                gradient.addColorStop(1, 'rgba(0, 255, 255, 0)');
+                ctx.fillStyle = gradient;
+                ctx.fill();
+            }
+        }
+
+        function animateChart() {
+            let start = null;
+            const duration = 3000;
+
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                const progress = Math.min((timestamp - start) / duration, 1);
+                
+                drawChart(progress);
+                
+                if (progress < 1) {
+                    animationId = requestAnimationFrame(step);
+                }
+            }
+            
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            animationId = requestAnimationFrame(step);
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            resizeCanvas();
+            generateChartData();
+            drawChart(1);
+            
+            // Start animation after a brief delay
+            setTimeout(() => {
+                animateChart();
+            }, 100);
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Start button functionality
+        document.getElementById('startButton').addEventListener('click', function() {
+            this.classList.add('clicked');
+            
+            // Cancel any ongoing animation
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            
+            // Start final animation
+            animateChart();
+            
+            setTimeout(() => {
+                document.getElementById('gameScreen').classList.add('hidden');
+                setTimeout(() => {
+                    document.getElementById('mainContent').classList.add('visible');
+                }, 1000);
+            }, 3000);
+        });
+
+        // Restart chart animation periodically while welcome screen is visible
+        setInterval(() => {
+            const gameScreen = document.getElementById('gameScreen');
+            if (!gameScreen.classList.contains('hidden')) {
+                generateChartData();
+                animateChart();
+            }
+        }, 6000);
+
+        // Modal functions
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.classList.add('active');
+            modalImg.src = imageSrc;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+        }
+
+        // Close nav menu when clicking links (mobile)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
